@@ -33,10 +33,17 @@ class User
     #[ORM\OneToMany(targetEntity: Favoris::class, mappedBy: 'id_user')]
     private Collection $favoris;
 
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'id_user')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->locations = new ArrayCollection();
         $this->favoris = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -121,6 +128,36 @@ class User
            // set the owning side to null (unless already changed)
            if ($favori->getIdUser() === $this) {
                $favori->setIdUser(null);
+           }
+       }
+
+       return $this;
+   }
+
+   /**
+    * @return Collection<int, Note>
+    */
+   public function getNotes(): Collection
+   {
+       return $this->notes;
+   }
+
+   public function addNote(Note $note): static
+   {
+       if (!$this->notes->contains($note)) {
+           $this->notes->add($note);
+           $note->setIdUser($this);
+       }
+
+       return $this;
+   }
+
+   public function removeNote(Note $note): static
+   {
+       if ($this->notes->removeElement($note)) {
+           // set the owning side to null (unless already changed)
+           if ($note->getIdUser() === $this) {
+               $note->setIdUser(null);
            }
        }
 

@@ -44,9 +44,16 @@ class Film
     #[ORM\OneToMany(targetEntity: Favoris::class, mappedBy: 'id_film')]
     private Collection $favoris;
 
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'id_film')]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->favoris = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -162,6 +169,36 @@ class Film
             // set the owning side to null (unless already changed)
             if ($favori->getIdFilm() === $this) {
                 $favori->setIdFilm(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setIdFilm($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getIdFilm() === $this) {
+                $note->setIdFilm(null);
             }
         }
 
