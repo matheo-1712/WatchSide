@@ -19,7 +19,5 @@
 /assets/vendor/
 ###< symfony/asset-mapper ###
 
-### env gitignore ###
-.env
-.env.dev
-.env.test
+### idea ###
+/.idea/
