@@ -6,9 +6,13 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+#[UniqueEntity(fields: ['nom_utilisateur'], message: 'There is already an account with this nom_utilisateur')]
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -20,6 +24,9 @@ class User
 
     #[ORM\Column(length: 255)]
     private ?string $mot_de_passe = null;
+
+    #[ORM\Column(type: 'json')]
+    private array $roles = [];
 
     /**
      * @var Collection<int, Location>
@@ -67,100 +74,149 @@ class User
     {
         return $this->mot_de_passe;
     }
-   public function setMotDePasse(string $mot_de_passe): static
+    public function setMot_de_passe(string $mot_de_passe): static
     {
         $this->mot_de_passe = $mot_de_passe;
 
         return $this;
     }
 
-   /**
-    * @return Collection<int, Location>
-    */
-   public function getLocations(): Collection
-   {
-       return $this->locations;
-   }
+    /**
+     * @return Collection<int, Location>
+     */
+    public function getLocations(): Collection
+    {
+        return $this->locations;
+    }
 
-   public function addLocation(Location $location): static
-   {
-       if (!$this->locations->contains($location)) {
-           $this->locations->add($location);
-           $location->setIdUser($this);
-       }
+    public function addLocation(Location $location): static
+    {
+        if (!$this->locations->contains($location)) {
+            $this->locations->add($location);
+            $location->setIdUser($this);
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
-   public function removeLocation(Location $location): static
-   {
-       if ($this->locations->removeElement($location)) {
-           // set the owning side to null (unless already changed)
-           if ($location->getIdUser() === $this) {
-               $location->setIdUser(null);
-           }
-       }
+    public function removeLocation(Location $location): static
+    {
+        if ($this->locations->removeElement($location)) {
+            // set the owning side to null (unless already changed)
+            if ($location->getIdUser() === $this) {
+                $location->setIdUser(null);
+            }
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
-   /**
-    * @return Collection<int, Favoris>
-    */
-   public function getFavoris(): Collection
-   {
-       return $this->favoris;
-   }
+    /**
+     * @return Collection<int, Favoris>
+     */
+    public function getFavoris(): Collection
+    {
+        return $this->favoris;
+    }
 
-   public function addFavori(Favoris $favori): static
-   {
-       if (!$this->favoris->contains($favori)) {
-           $this->favoris->add($favori);
-           $favori->setIdUser($this);
-       }
+    public function addFavori(Favoris $favori): static
+    {
+        if (!$this->favoris->contains($favori)) {
+            $this->favoris->add($favori);
+            $favori->setIdUser($this);
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
-   public function removeFavori(Favoris $favori): static
-   {
-       if ($this->favoris->removeElement($favori)) {
-           // set the owning side to null (unless already changed)
-           if ($favori->getIdUser() === $this) {
-               $favori->setIdUser(null);
-           }
-       }
+    public function removeFavori(Favoris $favori): static
+    {
+        if ($this->favoris->removeElement($favori)) {
+            // set the owning side to null (unless already changed)
+            if ($favori->getIdUser() === $this) {
+                $favori->setIdUser(null);
+            }
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
-   /**
-    * @return Collection<int, Note>
-    */
-   public function getNotes(): Collection
-   {
-       return $this->notes;
-   }
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
 
-   public function addNote(Note $note): static
-   {
-       if (!$this->notes->contains($note)) {
-           $this->notes->add($note);
-           $note->setIdUser($this);
-       }
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setIdUser($this);
+        }
 
-       return $this;
-   }
+        return $this;
+    }
 
-   public function removeNote(Note $note): static
-   {
-       if ($this->notes->removeElement($note)) {
-           // set the owning side to null (unless already changed)
-           if ($note->getIdUser() === $this) {
-               $note->setIdUser(null);
-           }
-       }
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getIdUser() === $this) {
+                $note->setIdUser(null);
+            }
+        }
 
-       return $this;
-   }
+        return $this;
+    }
+
+    /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->nom_utilisateur;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see PasswordAuthenticatedUserInterface
+     */
+    public function getPassword(): string
+    {
+        return $this->mot_de_passe;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->mot_de_passe = $password;
+
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+        // TODO: Implement eraseCredentials() method.
+    }
 }
