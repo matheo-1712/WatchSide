@@ -120,45 +120,67 @@
 
 /* Lightsaber Animations */
 .sith-bg {
-    position: relative;
-    overflow: hidden;
-    background: radial-gradient(circle at center, #2b0505 0%, #000000 100%);
-}
-
-.lightsaber-container {
     position: fixed;
+    /* Forced fixed to screen */
     top: 0;
     left: 0;
     width: 100%;
     height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #2b0505 0%, #050505 100%);
     z-index: -1;
+    /* Behind everything content-wise */
+}
+
+.lightsaber-container {
+    position: absolute;
+    /* Absolute within the fixed sith-bg */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* On top of the bg color */
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.8;
+    /* Increased opacity */
 }
 
 .saber {
     position: absolute;
     width: 600px;
-    height: 15px;
+    height: 20px;
+    /* Thicker blade */
     border-radius: 10px;
     top: 50%;
     left: 50%;
-    box-shadow: 0 0 20px 5px currentColor;
+    box-shadow: 0 0 30px 10px currentColor;
+    /* Stronger glow */
     filter: blur(2px);
+    background: currentColor;
 }
 
 .saber-red {
-    background: #FF0000;
     color: #FF0000;
     transform: translate(-50%, -50%) rotate(45deg);
     animation: saber-clash-red 4s infinite ease-in-out;
 }
 
 .saber-green {
-    background: #00FF00;
     color: #00FF00;
     transform: translate(-50%, -50%) rotate(-45deg);
     animation: saber-clash-green 4s infinite ease-in-out;
+}
+
+/* Fog Overlay needs to be on top of sabers but transparent enough */
+.sith-fog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 30%, #000 95%);
+    z-index: 2;
 }
 
 @keyframes saber-clash-red {
