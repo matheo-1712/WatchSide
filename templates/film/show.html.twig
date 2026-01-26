@@ -1,46 +1,96 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Film{% endblock %}
+{% block title %}{{ film.titre }} - WatchSide Galactic{% endblock %}
 
 {% block body %}
-    <h1>Film</h1>
+{# Backdrop with Blur #}
+<div class="position-absolute top-0 start-0 w-100 h-100 z-0 overflow-hidden" style="max-height: 100vh;">
+    {% if film.image %}
+        <div style="background-image: url('{{ film.image }}'); background-size: cover; background-position: center; filter: blur(20px) brightness(0.3); width: 100%; height: 100%;"></div>
+    {% else %}
+        <div class="bg-void w-100 h-100"></div>
+    {% endif %}
+</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ film.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ film.titre }}</td>
-            </tr>
-            <tr>
-                <th>Anne_sortie</th>
-                <td>{{ film.anneSortie ? film.anneSortie|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Duree</th>
-                <td>{{ film.duree }}</td>
-            </tr>
-            <tr>
-                <th>Synopsis</th>
-                <td>{{ film.synopsis }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ film.image }}</td>
-            </tr>
-            <tr>
-                <th>Prix_default</th>
-                <td>{{ film.prixDefault }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container position-relative z-1 py-5 animate-fade-in">
+    <div class="row align-items-center mb-4">
+        <div class="col-auto">
+            <a href="{{ path('app_film_index') }}" class="btn btn-outline-secondary btn-sm text-uppercase">
+                <i class="bi bi-arrow-left"></i> Retour au catalogue
+            </a>
+        </div>
+    </div>
 
-    <a href="{{ path('app_film_index') }}">back to list</a>
+    {# Hologram Deck (Main Content) #}
+    <div class="glass-panel p-5">
+        <div class="row g-5">
+            {# Poster #}
+            <div class="col-md-4 text-center">
+                {% if film.image %}
+                    <img src="{{ film.image }}" class="img-fluid rounded shadow-lg border border-secondary" style="max-height: 500px;" alt="{{ film.titre }}">
+                {% else %}
+                    <div class="bg-dark rounded d-flex align-items-center justify-content-center text-muted border border-secondary" style="height: 500px; width: 100%;">
+                        <i class="bi bi-film display-1"></i>
+                    </div>
+                {% endif %}
+                
+                <div class="mt-4">
+                     <p class="text-sith display-6 fw-bold mb-3">
+                        {{ film.prixDefault ? film.prixDefault ~ ' €' : 'Gratuit' }}
+                    </p>
+                    <a href="#" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
+                        <i class="bi bi-play-circle me-2"></i> LOUER LE CONTRAT
+                    </a>
+                    <button class="btn btn-outline-light btn-sm w-100 click-effect">
+                        <i class="bi bi-heart me-1"></i> Ajouter aux favoris
+                    </button>
+                </div>
+            </div>
 
-    <a href="{{ path('app_film_edit', {'id': film.id}) }}">edit</a>
+            {# Details #}
+            <div class="col-md-8 text-white">
+                <h1 class="display-3 fw-bold text-hologram mb-2" style="font-family: 'Orbitron';">{{ film.titre }}</h1>
+                <div class="d-flex align-items-center mb-4 text-secondary">
+                    <span class="me-3"><i class="bi bi-calendar-event me-1"></i> {{ film.anneSortie ? film.anneSortie|date('Y') : 'Inconnu' }}</span>
+                    <span class="me-3"><i class="bi bi-clock me-1"></i> {{ film.duree ? film.duree ~ ' min' : '?' }}</span>
+                    <span><i class="bi bi-star-fill text-warning me-1"></i> 4.5/5</span>
+                </div>
 
-    {{ include('film/_delete_form.html.twig') }}
+                <div class="mb-5">
+                    <h4 class="text-uppercase text-secondary mb-3 border-bottom border-dark pb-1" style="letter-spacing: 2px;">Synopsis</h4>
+                    <p class="lead text-starlight text-justify" style="line-height: 1.8;">
+                        {{ film.synopsis }}
+                    </p>
+                </div>
+
+                {# Tech Specs / Mock Data for visual flair #}
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <div class="p-3 border border-secondary rounded bg-black bg-opacity-25">
+                            <small class="text-muted d-block text-uppercase">Réalisateur</small>
+                            <span class="fw-bold text-hologram">Donnée Classifiée</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="p-3 border border-secondary rounded bg-black bg-opacity-25">
+                            <small class="text-muted d-block text-uppercase">Genre</small>
+                            <span class="fw-bold text-hologram">
+                                {{ film.idGenre ? film.idGenre.libelle : 'Non spécifié' }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 text-end">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a href="{{ path('app_film_edit', {'id': film.id}) }}" class="btn btn-outline-secondary btn-sm me-2">
+                             Éditer les données
+                        </a>
+                        {{ include('film/_delete_form.html.twig') }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

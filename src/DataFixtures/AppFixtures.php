@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
                 'annee' => '1977-05-25',
                 'duree' => 121,
                 'synopsis' => "C'est la guerre civile. Les vaisseaux spatiaux rebelles, frappant depuis une base cachée, ont remporté leur première victoire contre le maléfique Empire Galactique.",
-                'image' => 'star_wars_iv.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 10.99
             ],
             [
@@ -39,7 +39,7 @@ class AppFixtures extends Fixture
                 'annee' => '1980-05-21',
                 'duree' => 124,
                 'synopsis' => "C'est une époque sombre pour la Rébellion. Bien que l'Étoile de la Mort ait été détruite, les troupes impériales ont chassé les forces rebelles de leur base cachée et les ont poursuivies à travers la galaxie.",
-                'image' => 'star_wars_v.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 12.99
             ],
             [
@@ -48,7 +48,7 @@ class AppFixtures extends Fixture
                 'annee' => '1983-05-25',
                 'duree' => 131,
                 'synopsis' => "Luke Skywalker est retourné sur sa planète natale de Tatooine pour tenter de sauver son ami Han Solo des griffes du vil gangster Jabba le Hutt.",
-                'image' => 'star_wars_vi.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 11.99
             ],
             [
@@ -57,7 +57,7 @@ class AppFixtures extends Fixture
                 'annee' => '1999-05-19',
                 'duree' => 136,
                 'synopsis' => "Deux chevaliers Jedi échappent à un blocus hostile pour trouver des alliés et croisent un jeune garçon qui pourrait apporter l'équilibre à la Force.",
-                'image' => 'star_wars_i.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 9.99
             ],
             [
@@ -66,7 +66,7 @@ class AppFixtures extends Fixture
                 'annee' => '2002-05-16',
                 'duree' => 142,
                 'synopsis' => "Dix ans après leur première rencontre, Anakin Skywalker partage une histoire d'amour interdite avec Padmé Amidala, tandis qu'Obi-Wan Kenobi enquête sur une tentative d'assassinat.",
-                'image' => 'star_wars_ii.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 9.99
             ],
             [
@@ -75,7 +75,7 @@ class AppFixtures extends Fixture
                 'annee' => '2005-05-19',
                 'duree' => 140,
                 'synopsis' => "Trois ans après le début de la Guerre des Clones, les Jedi sauvent Palpatine du Comte Dooku. Alors qu'Obi-Wan poursuit une nouvelle menace, Anakin agit comme agent double.",
-                'image' => 'star_wars_iii.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 12.99
             ],
             [
@@ -84,7 +84,7 @@ class AppFixtures extends Fixture
                 'annee' => '1987-06-24',
                 'duree' => 96,
                 'synopsis' => "Une parodie culte de Star Wars où Lone Starr et son fidèle Barf doivent sauver la princesse Vespa des griffes de Lord Casque Noir.",
-                'image' => 'spaceballs.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 7.99
             ],
             [
@@ -93,7 +93,7 @@ class AppFixtures extends Fixture
                 'annee' => '2016-12-16',
                 'duree' => 133,
                 'synopsis' => "La fille d'un scientifique impérial rejoint l'Alliance Rebelle dans une mission risquée pour voler les plans de l'Étoile de la Mort.",
-                'image' => 'rogue_one.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 13.99
             ],
             [
@@ -102,7 +102,7 @@ class AppFixtures extends Fixture
                 'annee' => '2018-05-25',
                 'duree' => 135,
                 'synopsis' => "Au cours d'une aventure dans un monde criminel sombre, Han Solo rencontre son futur copilote Chewbacca et croise la route du joueur Lando Calrissian.",
-                'image' => 'solo.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 11.99
             ],
             [
@@ -111,7 +111,7 @@ class AppFixtures extends Fixture
                 'annee' => '2009-02-06',
                 'duree' => 90,
                 'synopsis' => "Des fans de Star Wars voyagent à travers le pays jusqu'au ranch de George Lucas pour voir l'épisode I avant sa sortie officielle.",
-                'image' => 'fanboys.jpg',
+                'image' => '/images/mesa_empire_strikes_back.png',
                 'prix' => 6.99
             ]
         ];

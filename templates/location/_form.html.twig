@@ -1,4 +1,6 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="mb-3">
+        {{ form_widget(form) }}
+    </div>
+    <button class="btn btn-galactic btn-lg w-100">{{ button_label|default('Valider la mission') }}</button>
 {{ form_end(form) }}

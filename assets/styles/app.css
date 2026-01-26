@@ -1,3 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600&family=Orbitron:wght@400;700&display=swap');
+
+:root {
+    --color-void: #050505;
+    --color-deep-space: #1A1A1D;
+    --color-hologram: #4ECCA3;
+    --color-sith: #E23E57;
+    --color-starlight: #EEEEEE;
+    --color-nebula: #393E46;
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--color-void);
+    color: var(--color-starlight);
+    font-family: 'Exo 2', sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6, .navbar-brand {
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+/* Background Stars Animation */
+.bg-void {
+    background: radial-gradient(circle at center, #1A1A1D 0%, #050505 100%);
+    position: relative;
+}
+
+.bg-void::before {
+    content: "";
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 3px),
+        radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 2px),
+        radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 3px);
+    background-size: 550px 550px, 350px 350px, 250px 250px;
+    background-position: 0 0, 40px 60px, 130px 270px;
+    z-index: -1;
+    animation: star-move 200s linear infinite;
+}
+
+@keyframes star-move {
+    from { background-position: 0 0, 40px 60px, 130px 270px; }
+    to { background-position: 550px 550px, 390px 410px, 380px 520px; }
+}
+
+/* Glassmorphism */
+.glass-panel {
+    background: rgba(26, 26, 29, 0.7);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(78, 204, 163, 0.2);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    border-radius: 12px;
+}
+
+/* Navbar */
+.navbar-galactic {
+    background: rgba(5, 5, 5, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--color-nebula);
+}
+
+.nav-link {
+    color: var(--color-starlight) !important;
+    position: relative;
+    transition: color 0.3s;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--color-hologram) !important;
+    text-shadow: 0 0 10px rgba(78, 204, 163, 0.5);
+}
+
+/* Buttons */
+.btn-galactic {
+    color: var(--color-hologram);
+    border: 2px solid var(--color-hologram);
+    background: transparent;
+    transition: all 0.4s ease;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn-galactic:hover {
+    background: var(--color-hologram);
+    color: var(--color-void);
+    box-shadow: 0 0 20px var(--color-hologram);
+}
+
+.btn-sith {
+    color: var(--color-sith);
+    border: 2px solid var(--color-sith);
+    background: transparent;
+    transition: all 0.4s ease;
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+}
+
+.btn-sith:hover {
+    background: var(--color-sith);
+    color: var(--color-starlight);
+    box-shadow: 0 0 20px var(--color-sith);
+}
+
+/* Cards */
+.card-movie {
+    background-color: var(--color-deep-space);
+    border: 1px solid var(--color-nebula);
+    transition: transform 0.3s, box-shadow 0.3s;
+    overflow: hidden;
+}
+
+.card-movie:hover {
+    transform: scale(1.03);
+    border-color: var(--color-hologram);
+    box-shadow: 0 0 15px rgba(78, 204, 163, 0.3);
+}
+
+.card-movie img {
+    transition: opacity 0.3s;
+}
+
+.card-movie:hover img {
+    opacity: 0.8;
+}
+
+/* Text Utilities */
+.text-hologram { color: var(--color-hologram); }
+.text-sith { color: var(--color-sith); }
+.text-justify { text-align: justify; }
+
+/* Forms */
+.form-control {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--color-nebula);
+    color: var(--color-starlight);
+}
+
+.form-control:focus {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-hologram);
+    color: var(--color-starlight);
+    box-shadow: 0 0 0 0.25rem rgba(78, 204, 163, 0.25);
+}
+
+/* Footer */
+footer {
+    margin-top: auto;
+    border-top: 1px solid var(--color-nebula);
+    padding: 2rem 0;
+    background: var(--color-deep-space);
 }
