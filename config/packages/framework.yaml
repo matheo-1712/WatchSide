@@ -3,10 +3,18 @@ framework:
     secret: '%env(APP_SECRET)%'
 
     # Note that the session will be started ONLY if you read or write from it.
-    session: true
+    session:
+        handler_id: null
+        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        cookie_secure: auto
+        cookie_samesite: lax
 
     #esi: true
     #fragments: true
+    php_errors:
+        log: true
+
+    csrf_protection: true
 
 when@test:
     framework:
