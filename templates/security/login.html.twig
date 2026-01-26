@@ -7,14 +7,14 @@
 <div id="hyperspace-overlay" class="hyperspace-flash"></div>
 
 <div class="container d-flex justify-content-center align-items-center flex-grow-1" style="min-height: 80vh;">
-    
+
     <div class="col-md-6 col-lg-5">
         <div class="cockpit-panel p-5 rounded-3 text-center position-relative">
             {# Holographic Header #}
             <div class="mb-4">
                 <i class="bi bi-shield-lock display-3 text-hologram animate-pulse"></i>
                 <h1 class="h3 mt-3 text-uppercase text-hologram fw-bold" style="letter-spacing: 2px;">Accès Cockpit</h1>
-                <p class="text-muted small">Veuillez vous identifier pour déverrouiller les commandes.</p>
+                <p class="small">Veuillez vous identifier pour déverrouiller les commandes.</p>
             </div>
 
             <form method="post" id="login-form">
@@ -33,12 +33,12 @@
 
                 <div class="form-floating mb-3 text-start">
                     <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control cockpit-input" autocomplete="username" placeholder="Identifiant" required autofocus>
-                    <label for="username" class="text-muted">Identifiant Pilote</label>
+                    <label class="text-white-50" for="username" >Identifiant Pilote</label>
                 </div>
-                
+
                 <div class="form-floating mb-4 text-start">
                     <input type="password" name="_password" id="password" class="form-control cockpit-input" autocomplete="current-password" placeholder="Code d'accès" required>
-                    <label for="password" class="text-muted">Code d'accès</label>
+                    <label class="text-white-50" for="password">Code d'accès</label>
                 </div>
 
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
@@ -49,9 +49,9 @@
                     </span>
                 </button>
             </form>
-            
+
             <div class="mt-4 border-top border-secondary pt-3">
-                 <p class="small text-muted mb-0">Pas encore de licence de vol ? <a href="#" class="text-hologram text-decoration-none">Enrôlez-vous ici</a>.</p>
+                 <p class="small mb-12"> Toujours pas inscrit à l'appel de la Force ? <a href="/register" class="text-hologram text-decoration-none">Enrôlez-vous ici</a>.</p>
             </div>
         </div>
     </div>
@@ -61,15 +61,15 @@
     document.getElementById('login-form').addEventListener('submit', function(e) {
         // Prevent default submission to play animation first
         e.preventDefault();
-        
+
         const btn = document.getElementById('warp-button');
         const form = this;
-        
+
         // Add classes for visual effects
         document.body.classList.add('hyperspace-active');
         btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> PROPULSEURS À 100%...';
         btn.classList.add('disabled');
-        
+
         // Wait for animation (1.5s matches CSS) then submit
         setTimeout(() => {
             form.submit();
