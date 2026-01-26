@@ -52,7 +52,7 @@
                 <div class="d-flex align-items-center mb-4 text-secondary">
                     <span class="me-3"><i class="bi bi-calendar-event me-1"></i> {{ film.anneSortie ? film.anneSortie|date('Y') : 'Inconnu' }}</span>
                     <span class="me-3"><i class="bi bi-clock me-1"></i> {{ film.duree ? film.duree ~ ' min' : '?' }}</span>
-                    <span><i class="bi bi-star-fill text-warning me-1"></i> 4.5/5 ★ </span>
+                    <span><i class="bi bi-star-fill text-warning me-1"></i> {{ film.moyenneNotes ? film.moyenneNotes ~ '/5 ★' : 'Non noté' }}</span>
                 </div>
 
                 <div class="mb-5">
