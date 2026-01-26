@@ -8,18 +8,9 @@
         <div class="col-md-8 col-lg-6">
             <div class="glass-panel p-5">
                 <h1 class="text-hologram text-center mb-4 display-6">INITIER LE CONTRAT</h1>
-                
-                {# We assume the form is rendered here. 
-                   We wrap it to ensure form-controls get styled if I didn't override them globally enough 
-                   or if the form builder adds specific classes. 
-                   Note: simple_form usually doesn't have classes unless configured.
-                   I will rely on the global CSS that targets .form-control 
-                   but will add a wrapping div to scope potential styles. #}
-                
                 <div class="galactic-form">
                     {{ include('location/_form.html.twig') }}
                 </div>
-
                 <div class="mt-4 text-center">
                     <a href="{{ path('app_location_index') }}" class="btn btn-outline-secondary btn-sm">
                         <i class="bi bi-x-circle me-2"></i> Annuler la procédure

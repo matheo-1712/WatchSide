@@ -33,27 +33,26 @@
                         <i class="bi bi-film display-1"></i>
                     </div>
                 {% endif %}
-                
+
                 <div class="mt-4">
                      <p class="text-sith display-6 fw-bold mb-3">
                         {{ film.prixDefault ? film.prixDefault ~ ' €' : 'Gratuit' }}
                     </p>
-                    <a href="#" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
-                        <i class="bi bi-play-circle me-2"></i> LOUER LE CONTRAT
-                    </a>
+                    <a href="/location" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
+                        <i class="bi bi-play-circle me-2"></i> Louer ce film</a>
                     <button class="btn btn-outline-light btn-sm w-100 click-effect">
-                        <i class="bi bi-heart me-1"></i> Ajouter aux favoris
+                        <i class="bi bi-heart me-1"></i> Ajouter aux favoris PAS IMPLEMENTÉ
                     </button>
                 </div>
             </div>
 
             {# Details #}
             <div class="col-md-8 text-white">
-                <h1 class="display-3 fw-bold text-hologram mb-2" style="font-family: 'Orbitron';">{{ film.titre }}</h1>
+                <h1 class="display-3 fw-bold text-hologram mb-2">{{ film.titre }}</h1>
                 <div class="d-flex align-items-center mb-4 text-secondary">
                     <span class="me-3"><i class="bi bi-calendar-event me-1"></i> {{ film.anneSortie ? film.anneSortie|date('Y') : 'Inconnu' }}</span>
                     <span class="me-3"><i class="bi bi-clock me-1"></i> {{ film.duree ? film.duree ~ ' min' : '?' }}</span>
-                    <span><i class="bi bi-star-fill text-warning me-1"></i> 4.5/5</span>
+                    <span><i class="bi bi-star-fill text-warning me-1"></i> 4.5/5 ★ </span>
                 </div>
 
                 <div class="mb-5">
@@ -67,13 +66,13 @@
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="p-3 border border-secondary rounded bg-black bg-opacity-25">
-                            <small class="text-muted d-block text-uppercase">Réalisateur</small>
+                            <small class="d-block text-uppercase">Réalisateur</small>
                             <span class="fw-bold text-hologram">Donnée Classifiée</span>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="p-3 border border-secondary rounded bg-black bg-opacity-25">
-                            <small class="text-muted d-block text-uppercase">Genre</small>
+                            <small class="d-block text-uppercase">Genre</small>
                             <span class="fw-bold text-hologram">
                                 {{ film.idGenre ? film.idGenre.libelle : 'Non spécifié' }}
                             </span>
