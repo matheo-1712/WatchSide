@@ -178,8 +178,7 @@ class Film
     /**
      * @return Collection<int, Note>
      */
-    public function getNotes(): Collection
-    {
+    public function getNotes(): Collection {
         return $this->notes;
     }
 
@@ -189,7 +188,6 @@ class Film
             $this->notes->add($note);
             $note->setIdFilm($this);
         }
-
         return $this;
     }
 
@@ -201,7 +199,18 @@ class Film
                 $note->setIdFilm(null);
             }
         }
-
         return $this;
+    }
+
+    public function getMoyenneNotes(): ?float
+    {
+        if ($this->notes->isEmpty()) {
+            return null;
+        }
+        $total = 0;
+        foreach ($this->notes as $note) {
+            $total += $note->getNoteFilm();
+        }
+        return round($total / count($this->notes), 2);
     }
 }

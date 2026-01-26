@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Film;
+use App\Entity\Note;
 use App\Form\FilmType;
 use App\Repository\FilmRepository;
+use App\Repository\NoteRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,6 +21,7 @@ final class FilmController extends AbstractController
     {
         return $this->render('film/index.html.twig', [
             'films' => $filmRepository->findAll(),
+            'notes'
         ]);
     }
 
@@ -71,7 +74,7 @@ final class FilmController extends AbstractController
     #[Route('/{id}', name: 'app_film_delete', methods: ['POST'])]
     public function delete(Request $request, Film $film, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$film->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $film->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($film);
             $entityManager->flush();
         }

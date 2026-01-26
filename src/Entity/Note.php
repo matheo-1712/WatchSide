@@ -25,43 +25,35 @@ class Note
     private ?float $note_film = null;
 
     public function getId(): ?int
-    {
-        return $this->id;
-    }
+    {return $this->id;}
 
     public function getIdFilm(): ?Film
-    {
-        return $this->id_film;
-    }
+    {return $this->id_film;}
 
     public function setIdFilm(?Film $id_film): static
     {
         $this->id_film = $id_film;
-
         return $this;
     }
 
     public function getIdUser(): ?User
-    {
-        return $this->id_user;
-    }
+    {return $this->id_user;}
 
     public function setIdUser(?User $id_user): static
     {
         $this->id_user = $id_user;
-
         return $this;
     }
 
     public function getNoteFilm(): ?float
-    {
-        return $this->note_film;
-    }
+    {return $this->note_film;}
 
     public function setNoteFilm(float $note_film): static
     {
+        if ($note_film < 0.0 || $note_film > 5.0) {
+            throw new \InvalidArgumentException('La note doit être comprise entre 0 et 5.');
+        }
         $this->note_film = $note_film;
-
         return $this;
     }
 }
