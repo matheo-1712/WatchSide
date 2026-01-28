@@ -8,11 +8,6 @@
     <div class="row mb-4">
         <div class="col-12">
             <div class="cockpit-panel p-4 rounded-3 d-flex align-items-center">
-                <div class="me-4 position-relative">
-                    <div class="rounded-circle border border-2 border-info d-flex justify-content-center align-items-center bg-dark" style="width: 100px; height: 100px;">
-                        <i class="bi bi-person-astronaut display-3 text-info"></i>
-                    </div>
-                </div>
                 <div>
                     <h1 class="display-5 text-hologram fw-bold mb-0">{{ user.nomUtilisateur }}</h1>
                     <p class="text-secondary mb-0">Matricule: #{{ user.id|format_number({min_integer_digit: 4, grouping_used:false}) }}</p>
@@ -27,7 +22,7 @@
     {# Stats Grid #}
     <div class="row g-4 mb-4">
         {# Rentals Stat #}
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
             <div class="cockpit-panel p-3 rounded-3 text-center h-100 d-flex flex-column justify-content-center">
                 <i class="bi bi-ticket-perforated-fill display-4 text-warning mb-2"></i>
                 <h3 class="h2 text-white fw-bold mb-0">{{ user.locations|length }}</h3>
@@ -35,7 +30,7 @@
             </div>
         </div>
         {# Favorites Stat #}
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
              <div class="cockpit-panel p-3 rounded-3 text-center h-100 d-flex flex-column justify-content-center">
                 <i class="bi bi-heart-fill display-4 text-danger mb-2"></i>
                 <h3 class="h2 text-white fw-bold mb-0">{{ user.favoris|length }}</h3>
@@ -43,11 +38,11 @@
             </div>
         </div>
         {# Reviews Stat #}
-        <div class="col-md-6 col-lg-3">
+        <div class="col-md-6 col-lg-4">
              <div class="cockpit-panel p-3 rounded-3 text-center h-100 d-flex flex-column justify-content-center">
                 <i class="bi bi-chat-square-quote-fill display-4 text-primary mb-2"></i>
                 <h3 class="h2 text-white fw-bold mb-0">{{ user.notes|length }}</h3>
-                <p class="text-secondary small text-uppercase">Avis Donnés</p>
+                <p class="text-secondary small text-uppercase">Notes Donnés</p>
             </div>
         </div>
     </div>
