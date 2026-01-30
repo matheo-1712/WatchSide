@@ -40,9 +40,24 @@
                     </p>
                     <a href="/location" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
                         <i class="bi bi-play-circle me-2"></i> Louer ce film</a>
-                    <button class="btn btn-outline-light btn-sm w-100 click-effect">
-                        <i class="bi bi-heart me-1"></i> Ajouter aux favoris PAS IMPLEMENTÉ
-                    </button>
+
+
+                    {% if app.user %}
+                        {% if film in favoris %}
+                            <span class="badge bg-danger ms-2 mb-2 d-inline-block">Déjà dans vos favoris</span>
+                            <a href="{{ path('app_favoris_toggle', {id: film.id}) }}" class="btn btn-outline-danger btn-sm w-100 click-effect">
+                                <i class="bi bi-trash me-1"></i> Retirer des favoris
+                            </a>
+                        {% else %}
+                            <a href="{{ path('app_favoris_toggle', {id: film.id}) }}" class="btn btn-outline-light btn-sm w-100 click-effect">
+                                <i class="bi bi-heart me-1"></i> Ajouter aux favoris
+                            </a>
+                        {% endif %}
+                    {% else %}
+                        <a href="{{ path('app_login', {'redirect_to': app.request.requestUri}) }}" class="btn btn-outline-light btn-sm w-100 click-effect">
+                            Connectez-vous pour ajouter aux favoris.
+                        </a>
+                    {% endif %}
                 </div>
             </div>
 
