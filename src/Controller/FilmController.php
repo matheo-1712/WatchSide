@@ -67,14 +67,28 @@ final class FilmController extends AbstractController
         $user = $this->getUser();
 
         $favoris = [];
+        $currentRental = null;
+
         if ($user) {
             $favorisEntities = $user->getFavoris()->toArray();
             $favoris = array_map(fn($f) => $f->getIdFilm(), $favorisEntities);
+
+            // Check for active rental
+            foreach ($user->getLocations() as $location) {
+                if ($location->getIdFilm() === $film) {
+                    $now = new \DateTime();
+                    if ($location->getDateFin() === null || $location->getDateFin() > $now) {
+                        $currentRental = $location;
+                        break;
+                    }
+                }
+            }
         }
 
         return $this->render('film/show.html.twig', [
             'film' => $film,
             'favoris' => $favoris,
+            'currentRental' => $currentRental,
         ]);
     }
 

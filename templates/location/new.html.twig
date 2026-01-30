@@ -5,15 +5,44 @@
 {% block body %}
 <div class="container py-5">
     <div class="row justify-content-center">
-        <div class="col-md-8 col-lg-6">
-            <div class="glass-panel p-5">
-                <h1 class="text-hologram text-center mb-4 display-6">INITIER LE CONTRAT</h1>
+        <div class="col-md-10 col-lg-8">
+            <div class="glass-panel p-5 position-relative overflow-hidden">
+                
+                {# Animated Background Element #}
+                <div class="position-absolute top-0 end-0 p-5 opacity-10">
+                    <i class="bi bi-cart-plus display-1 text-hologram"></i>
+                </div>
+
+                <div class="row align-items-center mb-5">
+                     {% if selectedFilm %}
+                        <div class="col-md-4 text-center">
+                             {% if selectedFilm.image %}
+                                <img src="{{ selectedFilm.image }}" class="img-fluid rounded shadow-lg border border-secondary" style="max-height: 250px;" alt="{{ selectedFilm.titre }}">
+                            {% else %}
+                                <div class="bg-dark rounded d-flex align-items-center justify-content-center text-muted border border-secondary mx-auto" style="height: 250px; width: 170px;">
+                                    <i class="bi bi-film display-1"></i>
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-8">
+                            <h2 class="text-hologram fw-bold mb-2">Louer : {{ selectedFilm.titre }}</h2>
+                             <p class="text-secondary mb-0">Confirmez les détails de votre location intergalactique.</p>
+                        </div>
+                     {% else %}
+                        <div class="col-12 text-center">
+                             <h1 class="text-hologram display-6">NOUVELLE LOCATION</h1>
+                             <p class="text-secondary">Veuillez remplir le formulaire ci-dessous.</p>
+                        </div>
+                     {% endif %}
+                </div>
+                
                 <div class="galactic-form">
                     {{ include('location/_form.html.twig') }}
                 </div>
-                <div class="mt-4 text-center">
-                    <a href="{{ path('app_location_index') }}" class="btn btn-outline-secondary btn-sm">
-                        <i class="bi bi-x-circle me-2"></i> Annuler la procédure
+                
+                <div class="mt-5 d-flex justify-content-between align-items-center border-top border-secondary pt-4">
+                    <a href="{{ path('app_location_index') }}" class="btn btn-outline-secondary btn-sm link-light text-decoration-none">
+                        <i class="bi bi-arrow-left"></i> Retour
                     </a>
                 </div>
             </div>

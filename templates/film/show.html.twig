@@ -38,13 +38,20 @@
                      <p class="text-sith display-6 fw-bold mb-3">
                         {{ film.prixDefault ? film.prixDefault ~ ' €' : 'Gratuit' }}
                     </p>
-                    <a href="/location" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
-                        <i class="bi bi-play-circle me-2"></i> Louer ce film</a>
+                    
+                    {% if currentRental %}
+                         <div class="p-3 mb-3 rounded border border-danger text-danger text-center bg-black bg-opacity-25">
+                            <i class="bi bi-info-circle-fill me-2"></i> Une période de location est en cours
+                        </div>
+                    {% else %}
+                        <a href="{{ path('app_location_new', {'id': film.id}) }}" class="btn btn-galactic btn-lg w-100 py-3 mb-2 click-effect">
+                            <i class="bi bi-cart-plus me-2"></i> Louer ce film
+                        </a>
+                    {% endif %}
 
 
                     {% if app.user %}
                         {% if film in favoris %}
-                            <span class="badge bg-danger ms-2 mb-2 d-inline-block">Déjà dans vos favoris</span>
                             <a href="{{ path('app_favoris_toggle', {id: film.id}) }}" class="btn btn-outline-danger btn-sm w-100 click-effect">
                                 <i class="bi bi-trash me-1"></i> Retirer des favoris
                             </a>
