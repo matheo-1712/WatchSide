@@ -61,27 +61,55 @@ final class FilmController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_film_show', methods: ['GET'])]
-    public function show(Film $film): Response
+    #[Route('/{id}', name: 'app_film_show', methods: ['GET', 'POST'])]
+    public function show(Request $request, Film $film, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
 
         $favoris = [];
         $currentRental = null;
+        $hasRented = false;
+        $existingNote = null;
+        $ratingForm = null;
 
         if ($user) {
             $favorisEntities = $user->getFavoris()->toArray();
             $favoris = array_map(fn($f) => $f->getIdFilm(), $favorisEntities);
 
-            // Check for active rental
+            // Check rentals
             foreach ($user->getLocations() as $location) {
                 if ($location->getIdFilm() === $film) {
+                    $hasRented = true;
                     $now = new \DateTime();
                     if ($location->getDateFin() === null || $location->getDateFin() > $now) {
                         $currentRental = $location;
-                        break;
                     }
                 }
+            }
+
+            // Check existing note
+            $existingNote = $entityManager->getRepository(\App\Entity\Note::class)->findOneBy([
+                'id_user' => $user,
+                'id_film' => $film
+            ]);
+
+            // Handle Rating Form
+            if ($hasRented) {
+                $note = $existingNote ?? new \App\Entity\Note();
+                $form = $this->createForm(\App\Form\FilmRatingType::class, $note);
+                $form->handleRequest($request);
+
+                if ($form->isSubmitted() && $form->isValid()) {
+                    $note->setIdUser($user);
+                    $note->setIdFilm($film);
+
+                    $entityManager->persist($note);
+                    $entityManager->flush();
+
+                    $this->addFlash('success', 'Votre note a été enregistrée !');
+                    return $this->redirectToRoute('app_film_show', ['id' => $film->getId()]);
+                }
+                $ratingForm = $form->createView();
             }
         }
 
@@ -89,6 +117,9 @@ final class FilmController extends AbstractController
             'film' => $film,
             'favoris' => $favoris,
             'currentRental' => $currentRental,
+            'hasRented' => $hasRented,
+            'ratingForm' => $ratingForm,
+            'existingNote' => $existingNote,
         ]);
     }
 
