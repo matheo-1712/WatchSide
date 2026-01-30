@@ -15,15 +15,23 @@ class LocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('date_debut')
-            ->add('date_fin')
+            ->add('date_debut', null, [
+                'widget' => 'single_text',
+                'label' => 'Début de mission',
+                'attr' => ['class' => 'form-control bg-dark text-light border-secondary'],
+            ])
+            ->add('date_fin', null, [
+                'widget' => 'single_text',
+                'label' => 'Fin de mission',
+                'required' => false,
+                'attr' => ['class' => 'form-control bg-dark text-light border-secondary'],
+            ])
             ->add('id_film', EntityType::class, [
                 'class' => Film::class,
-                'choice_label' => 'id',
-            ])
-            ->add('id_user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
+                'choice_label' => 'titre',
+                'label' => 'Film sélectionné',
+                'placeholder' => 'Choisir un film...',
+                'attr' => ['class' => 'form-select bg-dark text-light border-secondary'],
             ])
         ;
     }

@@ -64,18 +64,34 @@
                 {% else %}
                     <div class="list-group list-group-flush bg-transparent">
                         {% for location in user.locations %}
+                            {% set is_active = location.dateFin is null or location.dateFin > date('now') %}
                             <div class="list-group-item bg-transparent text-white border-secondary d-flex justify-content-between align-items-center px-0">
                                 <div class="d-flex align-items-center">
-                                    <div class="rounded bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
-                                        <i class="bi bi-film fs-4"></i>
-                                    </div>
+                                    {% if location.idFilm.image %}
+                                        <img src="{{ location.idFilm.image }}" alt="{{ location.idFilm.titre }}" class="rounded me-3 object-fit-cover" style="width: 50px; height: 75px;">
+                                    {% else %}
+                                        <div class="rounded bg-secondary d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 75px;">
+                                            <i class="bi bi-film fs-4"></i>
+                                        </div>
+                                    {% endif %}
                                     <div>
                                         {# Accessing relationship via idFilm getter #}
                                         <h5 class="mb-0">{{ location.idFilm.titre }}</h5>
-                                        <small class="text-muted">Loué le {{ location.dateDebut|date('d/m/Y') }}</small>
+                                        <small class="text-muted d-block">
+                                            Du {{ location.dateDebut|date('d/m/Y') }} 
+                                            {% if location.dateFin %}
+                                                au {{ location.dateFin|date('d/m/Y') }}
+                                            {% else %}
+                                                (Indéfinie)
+                                            {% endif %}
+                                        </small>
                                     </div>
                                 </div>
-                                <span class="badge bg-warning text-dark">En cours</span>
+                                {% if is_active %}
+                                    <span class="badge bg-warning text-dark">En cours</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">Terminée</span>
+                                {% endif %}
                             </div>
                         {% endfor %}
                     </div>
