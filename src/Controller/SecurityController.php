@@ -9,9 +9,22 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+    use \Symfony\Component\Security\Http\Util\TargetPathTrait;
+
     #[Route(path: '/login', name: 'app_login')]
-    public function login(AuthenticationUtils $authenticationUtils): Response
+    public function login(AuthenticationUtils $authenticationUtils, \Symfony\Component\HttpFoundation\Request $request): Response
     {
+        // Save the referer as the target path if not already set
+        $session = $request->getSession();
+        $firewallName = 'main'; // Adjust this if your firewall name is different in security.yaml
+
+        if (!$this->getTargetPath($session, $firewallName)) {
+            $referer = $request->headers->get('referer');
+            if ($referer && !str_contains($referer, '/login') && !str_contains($referer, '/register')) {
+                $this->saveTargetPath($session, $firewallName, $referer);
+            }
+        }
+
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 
