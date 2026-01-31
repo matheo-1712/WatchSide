@@ -10,11 +10,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/favoris')]
 final class FavorisController extends AbstractController
 {
     #[Route(name: 'app_favoris_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function index(FavorisRepository $favorisRepository): Response
     {
         return $this->render('favoris/index.html.twig', [
@@ -49,6 +51,31 @@ final class FavorisController extends AbstractController
             'favori' => $favori,
         ]);
     }
+
+
+    #[Route('/{id}/edit', name: 'app_favoris_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
+    public function edit(Request $request, Favoris $favori, EntityManagerInterface $entityManager): Response
+    {
+        $form = $this->createForm(FavorisType::class, $favori);
+        $form->handleRequest($request);
+
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+
+
+            return $this->redirectToRoute('app_favoris_index', [], Response::HTTP_SEE_OTHER);
+        }
+
+
+        return $this->render('favoris/edit.html.twig', [
+            'favori' => $favori,
+            'form' => $form,
+        ]);
+    }
+
+
 
     #[Route('/{id}', name: 'app_favoris_delete', methods: ['POST'])]
     public function delete(Request $request, Favoris $favori, EntityManagerInterface $entityManager): Response

@@ -7,8 +7,17 @@ use App\Entity\Genre;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 class AppFixtures extends Fixture
 {
+    private UserPasswordHasherInterface $hasher;
+
+    public function __construct(UserPasswordHasherInterface $hasher)
+    {
+        $this->hasher = $hasher;
+    }
+
     public function load(ObjectManager $manager): void
     {
         // Création des genres
@@ -121,6 +130,15 @@ class AppFixtures extends Fixture
                 'synopsis' => "La saga Skywalker touche à sa fin dans une bataille ultime entre le bien et le mal.",
                 'image' => '/images/star_wars_ix.png',
                 'prix' => 14.99
+            ],
+            [
+                'titre' => 'Star Wars: Jar Jar Binks Contre Attaque',
+                'genre' => 'Horreur',
+                'annee' => '2025-12-17',
+                'duree' => 142,
+                'synopsis' => "La saga Skywalker doit affronter un dernier ennemi puissant, charismatique et qui ne répète jamais un mot spécifique.",
+                'image' => '/images/mesa_empire_strikes_back.png',
+                'prix' => 14.99
             ]
         ];
 
@@ -135,6 +153,14 @@ class AppFixtures extends Fixture
             $film->setPrixDefault($data['prix']);
             $manager->persist($film);
         }
+
+
+        // Création de l'admin
+        $admin = new \App\Entity\User();
+        $admin->setNomUtilisateur('admin');
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setPassword($this->hasher->hashPassword($admin, 'admin'));
+        $manager->persist($admin);
 
         $manager->flush();
     }
