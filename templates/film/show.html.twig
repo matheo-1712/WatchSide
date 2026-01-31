@@ -38,7 +38,7 @@
                      <p class="text-sith display-6 fw-bold mb-3">
                         {{ film.prixDefault ? film.prixDefault ~ ' €' : 'Gratuit' }}
                     </p>
-                    
+
                     {% if currentRental %}
                          <div class="p-3 mb-3 rounded border border-danger text-danger text-center bg-black bg-opacity-25">
                             <i class="bi bi-info-circle-fill me-2"></i> Une période de location est en cours
@@ -123,14 +123,6 @@
                     </div>
                 {% endif %}
 
-                <div class="mt-5 text-end">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a href="{{ path('app_film_edit', {'id': film.id}) }}" class="btn btn-outline-secondary btn-sm me-2">
-                             Éditer les données
-                        </a>
-                        {{ include('film/_delete_form.html.twig') }}
-                    {% endif %}
-                </div>
             </div>
         </div>
     </div>

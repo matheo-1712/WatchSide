@@ -50,24 +50,6 @@ final class FavorisController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_favoris_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Favoris $favori, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(FavorisType::class, $favori);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_favoris_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('favoris/edit.html.twig', [
-            'favori' => $favori,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_favoris_delete', methods: ['POST'])]
     public function delete(Request $request, Favoris $favori, EntityManagerInterface $entityManager): Response
     {

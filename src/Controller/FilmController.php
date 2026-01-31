@@ -123,24 +123,6 @@ final class FilmController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_film_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Film $film, EntityManagerInterface $entityManager): Response
-    {
-        $form = $this->createForm(FilmType::class, $film);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_film_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('film/edit.html.twig', [
-            'film' => $film,
-            'form' => $form,
-        ]);
-    }
-
     #[Route('/{id}', name: 'app_film_delete', methods: ['POST'])]
     public function delete(Request $request, Film $film, EntityManagerInterface $entityManager): Response
     {
@@ -185,4 +167,32 @@ final class FilmController extends AbstractController
         return $this->redirectToRoute('app_film_show', ['id' => $film->getId()]);
     }
 
+    #[Route('/films/recherche', name: 'film_recherche')]
+    public function rechercherFilm(Request $request, EntityManagerInterface $em)
+    {
+        $motCle = $request->query->get('q');
+
+        if ($motCle) {
+            $films = $em->createQuery(
+                'SELECT f
+             FROM App\Entity\Film f
+             WHERE f.titre LIKE :mot'
+            )
+                ->setParameter('mot', '%' . $motCle . '%')
+                ->getResult();
+        } else {
+            $films = $em->getRepository(Film::class)->findAll();
+        }
+
+        $user = $this->getUser();
+        $favoris = [];
+        if ($user) {
+            $favoris = $user->getFavoris()->toArray();
+        }
+
+        return $this->render('film/index.html.twig', [
+            'films' => $films,
+            'favoris' => $favoris
+        ]);
+    }
 }
