@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\Note;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class FilmRatingType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('note_film', ChoiceType::class, [
+                'choices' => [
+                    '5 - Excellent' => 5,
+                    '4 - Très bon' => 4,
+                    '3 - Moyen' => 3,
+                    '2 - Pas terrible' => 2,
+                    '1 - Mauvais' => 1,
+                ],
+                'label' => false,
+                'expanded' => true, // Radio buttons
+                'multiple' => false,
+                'attr' => ['class' => 'd-flex justify-content-between gap-2'],
+                'label_attr' => ['class' => 'text-light']
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Noter ce film',
+                'attr' => ['class' => 'btn btn-outline-info w-100 mt-2']
+            ])
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => Note::class,
+        ]);
+    }
+}
