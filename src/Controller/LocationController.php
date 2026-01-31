@@ -22,23 +22,45 @@ final class LocationController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_location_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{id}', name: 'app_location_new', defaults: ['id' => null], methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, ?int $id = null): Response
     {
         $location = new Location();
+        $now = new \DateTime();
+        $location->setDateDebut($now);
+        $location->setDateFin((clone $now)->modify('+30 days'));
+
+        $selectedFilm = null;
+
+        if ($id) {
+            $selectedFilm = $entityManager->getRepository(\App\Entity\Film::class)->find($id);
+            if ($selectedFilm) {
+                $location->setIdFilm($selectedFilm);
+            }
+        }
+
         $form = $this->createForm(LocationType::class, $location);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $location->setIdUser($this->getUser()); // Auto-assign current user
+
+            // Enforce 30 days rule if date_fin is missing
+            if (!$location->getDateFin()) {
+                $startDate = $location->getDateDebut() ?: new \DateTime();
+                $location->setDateFin((clone $startDate)->modify('+30 days'));
+            }
+
             $entityManager->persist($location);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_location_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_film_show', ['id' => $location->getIdFilm()->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('location/new.html.twig', [
             'location' => $location,
             'form' => $form,
+            'selectedFilm' => $selectedFilm,
         ]);
     }
 
@@ -71,7 +93,7 @@ final class LocationController extends AbstractController
     #[Route('/{id}', name: 'app_location_delete', methods: ['POST'])]
     public function delete(Request $request, Location $location, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$location->getId(), $request->getPayload()->getString('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $location->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($location);
             $entityManager->flush();
         }

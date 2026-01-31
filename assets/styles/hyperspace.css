@@ -1,0 +1,230 @@
+/* Hyperspace Animation */
+@keyframes warp-speed {
+    0% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    100% {
+        transform: scale(40, 1);
+        opacity: 1;
+    }
+}
+
+.hyperspace-active::before {
+    animation: warp-speed 1.5s ease-in forwards !important;
+    background-image:
+        radial-gradient(white, rgba(255, 255, 255, .8) 2px, transparent 10px),
+        radial-gradient(white, rgba(255, 255, 255, .6) 1px, transparent 5px) !important;
+    background-size: 100px 100px, 50px 50px !important;
+    transition: all 1s ease;
+}
+
+.hyperspace-active .container,
+.hyperspace-active .navbar,
+.hyperspace-active footer {
+    transition: opacity 1s ease;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Smoother Whiteout Transition */
+.hyperspace-flash {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 9999;
+    transition: opacity 0.5s ease-in-out;
+}
+
+.hyperspace-active .hyperspace-flash {
+    animation: flash-white 2s ease-in forwards;
+}
+
+@keyframes flash-white {
+
+    0%,
+    70% {
+        opacity: 0;
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* Page Load Fade-in (Post-Jump) */
+.animate-fade-in {
+    animation: fade-in-orbit 1.2s ease-out forwards;
+}
+
+@keyframes fade-in-orbit {
+    0% {
+        opacity: 0;
+        transform: scale(1.1);
+        filter: blur(5px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+        filter: blur(0);
+    }
+}
+
+/* Cockpit Login Styles */
+.cockpit-panel {
+    background: rgba(10, 10, 15, 0.85);
+    border: 2px solid var(--color-hologram);
+    box-shadow: 0 0 30px rgba(78, 204, 163, 0.15), inset 0 0 20px rgba(78, 204, 163, 0.1);
+    backdrop-filter: blur(15px);
+    position: relative;
+    overflow: hidden;
+}
+
+.cockpit-panel::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background:
+        linear-gradient(90deg, transparent 95%, rgba(78, 204, 163, 0.1) 95%),
+        linear-gradient(0deg, transparent 95%, rgba(78, 204, 163, 0.1) 95%);
+    background-size: 20px 20px;
+    z-index: -1;
+}
+
+.cockpit-input {
+    background: rgba(0, 0, 0, 0.4) !important;
+    border: 1px solid var(--color-nebula);
+    color: var(--color-hologram) !important;
+    font-family: 'Exo 2', sans-serif;
+    letter-spacing: 1px;
+}
+
+.cockpit-input:focus {
+    border-color: var(--color-hologram);
+    box-shadow: 0 0 10px rgba(78, 204, 163, 0.3);
+}
+
+/* Lightsaber Animations */
+.sith-bg {
+    position: fixed;
+    /* Forced fixed to screen */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: radial-gradient(circle at center, #2b0505 0%, #050505 100%);
+    z-index: -1;
+    /* Behind everything content-wise */
+}
+
+.lightsaber-container {
+    position: absolute;
+    /* Absolute within the fixed sith-bg */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    /* On top of the bg color */
+    pointer-events: none;
+    opacity: 0.8;
+    /* Increased opacity */
+}
+
+.saber {
+    position: absolute;
+    width: 600px;
+    height: 20px;
+    /* Thicker blade */
+    border-radius: 10px;
+    top: 50%;
+    left: 50%;
+    box-shadow: 0 0 30px 10px currentColor;
+    /* Stronger glow */
+    filter: blur(2px);
+    background: currentColor;
+}
+
+.saber-red {
+    color: #FF0000;
+    transform: translate(-50%, -50%) rotate(45deg);
+    animation: saber-clash-red 4s infinite ease-in-out;
+}
+
+.saber-green {
+    color: #00FF00;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    animation: saber-clash-green 4s infinite ease-in-out;
+}
+
+/* Fog Overlay needs to be on top of sabers but transparent enough */
+.sith-fog {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, transparent 30%, #000 95%);
+    z-index: 2;
+}
+
+@keyframes saber-clash-red {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) rotate(45deg) translateX(-20px);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) rotate(42deg) translateX(20px);
+    }
+}
+
+@keyframes saber-clash-green {
+
+    0%,
+    100% {
+        transform: translate(-50%, -50%) rotate(-45deg) translateX(20px);
+    }
+
+    50% {
+        transform: translate(-50%, -50%) rotate(-42deg) translateX(-20px);
+    }
+}
+
+/* Sith Form Styles */
+.sith-panel {
+    border-color: var(--color-sith) !important;
+    box-shadow: 0 0 50px rgba(226, 62, 87, 0.2), inset 0 0 20px rgba(226, 62, 87, 0.1) !important;
+}
+
+.sith-panel::before {
+    background:
+        linear-gradient(90deg, transparent 95%, rgba(226, 62, 87, 0.1) 95%),
+        linear-gradient(0deg, transparent 95%, rgba(226, 62, 87, 0.1) 95%) !important;
+}
+
+.sith-input {
+    border-color: #551111 !important;
+    color: var(--color-sith) !important;
+}
+
+.sith-input:focus {
+    border-color: var(--color-sith) !important;
+    box-shadow: 0 0 15px rgba(226, 62, 87, 0.5) !important;
+}

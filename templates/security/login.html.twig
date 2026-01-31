@@ -1,38 +1,79 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}Authentification - WatchSide Galactic{% endblock %}
 
 {% block body %}
-    <form method="post">
-        {% if error %}
-            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-        {% endif %}
+{# Hyperspace Flash Overlay #}
+<div id="hyperspace-overlay" class="hyperspace-flash"></div>
 
-        {% if app.user %}
-            <div class="mb-3">
-                You are logged in as {{ app.user.userIdentifier }}, <a href="{{ logout_path() }}">Logout</a>
+<div class="container d-flex justify-content-center align-items-center flex-grow-1" style="min-height: 80vh;">
+
+    <div class="col-md-6 col-lg-5">
+        <div class="cockpit-panel p-5 rounded-3 text-center position-relative">
+            {# Holographic Header #}
+            <div class="mb-4">
+                <i class="bi bi-shield-lock display-3 text-hologram animate-pulse"></i>
+                <h1 class="h3 mt-3 text-uppercase text-hologram fw-bold" style="letter-spacing: 2px;">Accès Cockpit</h1>
+                <p class="small">Veuillez vous identifier pour déverrouiller les commandes.</p>
             </div>
-        {% endif %}
 
-        <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
-        <label for="username">Nom_utilisateur</label>
-        <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control" autocomplete="username" required autofocus>
-        <label for="password">Password</label>
-        <input type="password" name="_password" id="password" class="form-control" autocomplete="current-password" required>
-        <input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
+            <form method="post" id="login-form">
+                {% if error %}
+                    <div class="alert alert-danger bg-transparent text-sith border-sith" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i> {{ error.messageKey|trans(error.messageData, 'security') }}
+                    </div>
+                {% endif %}
 
-        {#
-            Uncomment this section and add a remember_me option below your firewall to activate remember me functionality.
-            See https://symfony.com/doc/current/security/remember_me.html
+                {% if app.user %}
+                    <div class="mb-3 text-hologram border border-success p-2 rounded">
+                        <i class="bi bi-person-check me-2"></i> Connecté en tant que {{ app.user.userIdentifier }}
+                        <a href="{{ path('app_logout') }}" class="text-sith ms-2 text-decoration-none fw-bold">Déconnexion</a>
+                    </div>
+                {% endif %}
 
-            <div class="checkbox mb-3">
-                <input type="checkbox" name="_remember_me" id="_remember_me">
-                <label for="_remember_me">Remember me</label>
+                <div class="form-floating mb-3 text-start">
+                    <input type="text" value="{{ last_username }}" name="_username" id="username" class="form-control cockpit-input" autocomplete="username" placeholder="Identifiant" required autofocus>
+                    <label class="text-white-50" for="username" >Identifiant Pilote</label>
+                </div>
+
+                <div class="form-floating mb-4 text-start">
+                    <input type="password" name="_password" id="password" class="form-control cockpit-input" autocomplete="current-password" placeholder="Code d'accès" required>
+                    <label class="text-white-50" for="password">Code d'accès</label>
+                </div>
+
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+                <button class="btn btn-galactic btn-lg w-100 py-3 fw-bold position-relative overflow-hidden" type="submit" id="warp-button">
+                    <span class="position-relative z-1">
+                        <i class="bi bi-rocket-takeoff me-2"></i> INITIALISER SAUT
+                    </span>
+                </button>
+            </form>
+
+            <div class="mt-4 border-top border-secondary pt-3">
+                 <p class="small mb-12"> Toujours pas inscrit à l'appel de la Force ? <a href="/register" class="text-hologram text-decoration-none">Enrôlez-vous ici</a>.</p>
             </div>
-        #}
+        </div>
+    </div>
+</div>
 
-        <button class="btn btn-lg btn-primary" type="submit">
-            Sign in
-        </button>
-    </form>
+<script>
+    document.getElementById('login-form').addEventListener('submit', function(e) {
+        // Prevent default submission to play animation first
+        e.preventDefault();
+
+        const btn = document.getElementById('warp-button');
+        const form = this;
+
+        // Add classes for visual effects
+        document.body.classList.add('hyperspace-active');
+        btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> PROPULSEURS À 100%...';
+        btn.classList.add('disabled');
+
+        // Wait for animation (1.5s matches CSS) then submit
+        setTimeout(() => {
+            form.submit();
+        }, 1500);
+    });
+</script>
 {% endblock %}

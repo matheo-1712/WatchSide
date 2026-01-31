@@ -16,6 +16,24 @@ class RegistrationController extends AbstractController
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        $session = $request->getSession();
+
+        // Store referer/redirect_to if it's a new visit (GET)
+        if ($request->isMethod('GET')) {
+            $targetPath = $request->query->get('redirect_to');
+
+            if (!$targetPath) {
+                $referer = $request->headers->get('referer');
+                if ($referer && !str_contains($referer, '/login') && !str_contains($referer, '/register')) {
+                    $targetPath = $referer;
+                }
+            }
+
+            if ($targetPath) {
+                $session->set('_registration_target_path', $targetPath);
+            }
+        }
+
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
@@ -31,6 +49,12 @@ class RegistrationController extends AbstractController
             $entityManager->flush();
 
             // do anything else you need here, like send an email
+
+            // Redirect to stored target path if it exists
+            if ($targetPath = $session->get('_registration_target_path')) {
+                $session->remove('_registration_target_path');
+                return $this->redirect($targetPath);
+            }
 
             return $this->redirectToRoute('app_user_index');
         }
