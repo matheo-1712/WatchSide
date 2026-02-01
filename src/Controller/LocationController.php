@@ -26,7 +26,7 @@ final class LocationController extends AbstractController
 
     #[Route('/new/{id}', name: 'app_location_new', defaults: ['id' => null], methods: ['GET', 'POST'])]
     #[IsGranted("ROLE_USER")]
-    public function new(Request $request, EntityManagerInterface $entityManager, ?int $id = null): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, \App\Service\PricingService $pricingService, ?int $id = null): Response
     {
         $location = new Location();
         $now = new \DateTime();
@@ -34,11 +34,15 @@ final class LocationController extends AbstractController
         $location->setDateFin((clone $now)->modify('+30 days'));
 
         $selectedFilm = null;
+        $calculatedPrice = null;
+        $surgeLabel = null;
 
         if ($id) {
             $selectedFilm = $entityManager->getRepository(\App\Entity\Film::class)->find($id);
             if ($selectedFilm) {
                 $location->setIdFilm($selectedFilm);
+                $calculatedPrice = $pricingService->calculatePrice($selectedFilm);
+                $surgeLabel = $pricingService->getSurgeLabel();
             }
         }
 
@@ -64,6 +68,8 @@ final class LocationController extends AbstractController
             'location' => $location,
             'form' => $form,
             'selectedFilm' => $selectedFilm,
+            'calculatedPrice' => $calculatedPrice,
+            'surgeLabel' => $surgeLabel,
         ]);
     }
 

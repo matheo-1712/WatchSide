@@ -22,6 +22,19 @@
                         <span class="input-group-text bg-transparent border-secondary text-light">
                             <i class="bi bi-search"></i>
                         </span>
+                        
+                        {# Genre Dropdown #}
+                        <select name="genre" class="form-select border-secondary text-light bg-transparent" style="max-width: 200px;">
+                            <option value="" class="bg-dark text-light">Tous les genres</option>
+                            {% if genres is defined %}
+                                {% for genre in genres %}
+                                    <option value="{{ genre.id }}" class="bg-dark text-light" {{ (selectedGenre is defined and selectedGenre == genre.id) ? 'selected' : '' }}>
+                                        {{ genre.libelle }}
+                                    </option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+
                         <input
                             name="q"
                             type="text"
@@ -29,7 +42,10 @@
                             placeholder="Rechercher un film..."
                             value="{{ app.request.get('q') }}"
                         >
-                        {% if app.request.get('q') %}
+                        
+                        <button class="btn btn-galactic" type="submit">Filtrer</button>
+
+                        {% if app.request.get('q') or app.request.get('genre') %}
                             <a href="{{ path('film_recherche') }}" class="btn btn-outline-secondary border-start-0 text-white" title="Effacer la recherche">
                                 <i class="bi bi-x-lg"></i>
                             </a>

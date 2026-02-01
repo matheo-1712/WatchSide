@@ -142,7 +142,19 @@ class AppFixtures extends Fixture
             ]
         ];
 
+        // Calcul des années min/max pour le prix dynamique
+        $years = array_map(fn($f) => (int) substr($f['annee'], 0, 4), $filmsData);
+        $minYear = min($years);
+        $maxYear = max($years);
+
+        $createdFilms = [];
         foreach ($filmsData as $data) {
+            $year = (int) substr($data['annee'], 0, 4);
+            // Formule : Prix = 7 + (ratio * (15 - 7))
+            // Le plus vieux = 7€, le plus récent = 15€
+            $ratio = ($year - $minYear) / ($maxYear - $minYear);
+            $price = 7.0 + ($ratio * (15.0 - 7.0));
+
             $film = new Film();
             $film->setTitre($data['titre']);
             $film->setIdGenre($genres[$data['genre']]);
@@ -150,17 +162,73 @@ class AppFixtures extends Fixture
             $film->setDuree($data['duree']);
             $film->setSynopsis($data['synopsis']);
             $film->setImage($data['image']);
-            $film->setPrixDefault($data['prix']);
+            $film->setPrixDefault(round($price, 2)); // On arrondit à 2 décimales
             $manager->persist($film);
+            $createdFilms[] = $film;
         }
 
 
-        // Création de l'admin
-        $admin = new \App\Entity\User();
-        $admin->setNomUtilisateur('admin');
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->hasher->hashPassword($admin, 'admin'));
-        $manager->persist($admin);
+        // Liste des utilisateurs à créer
+        $usersData = [
+            ['username' => 'admin', 'role' => 'ROLE_ADMIN'],
+            ['username' => 'yoda', 'role' => 'ROLE_USER'],
+            ['username' => 'vader', 'role' => 'ROLE_USER'],
+            ['username' => 'han', 'role' => 'ROLE_USER'],
+        ];
+
+        foreach ($usersData as $userData) {
+            $user = new \App\Entity\User();
+            $user->setNomUtilisateur($userData['username']);
+            $user->setRoles([$userData['role']]);
+            $user->setPassword($this->hasher->hashPassword($user, $userData['username']));
+            $manager->persist($user);
+
+            // Mélanger les films pour en prendre au hasard
+            $shuffledFilms = $createdFilms;
+            shuffle($shuffledFilms);
+
+            // 1. Créer 5 Locations (Mélange active/passée)
+            for ($i = 0; $i < 5; $i++) {
+                if (!isset($shuffledFilms[$i]))
+                    break;
+
+                $film = $shuffledFilms[$i];
+                $loc = new \App\Entity\Location();
+                $loc->setIdUser($user);
+                $loc->setIdFilm($film);
+
+                // Alterner entre active et passée
+                if ($i % 2 === 0) {
+                    // Active
+                    $loc->setDateDebut(new \DateTime('now'));
+                    $loc->setDateFin((new \DateTime('now'))->modify('+30 days'));
+                } else {
+                    // Passée
+                    $loc->setDateDebut((new \DateTime('now'))->modify('-' . rand(40, 100) . ' days'));
+                    $loc->setDateFin((new \DateTime('now'))->modify('-' . rand(1, 10) . ' days'));
+                }
+                $manager->persist($loc);
+            }
+
+            // 2. Créer 5 Notes (Films différents de ceux loués pour varier, ou les mêmes, peu importe)
+            // On re-mélange pour les notes
+            shuffle($shuffledFilms);
+            for ($i = 0; $i < 5; $i++) {
+                if (!isset($shuffledFilms[$i]))
+                    break;
+
+                $film = $shuffledFilms[$i];
+
+                // Vérifier si une note existe déjà pour ce user/film (pour éviter les doublons de PK si contrainte)
+                // Ici on suppose que le shuffle suffit pour l'exemple simple, ou on laisse faire
+
+                $note = new \App\Entity\Note();
+                $note->setIdUser($user);
+                $note->setIdFilm($film);
+                $note->setNoteFilm(rand(1, 5)); // Note aléatoire
+                $manager->persist($note);
+            }
+        }
 
         $manager->flush();
     }

@@ -3,28 +3,79 @@
 {% block title %}Location{% endblock %}
 
 {% block body %}
-    <h1>Location</h1>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card bg-dark text-light border-secondary shadow-lg">
+                    <div class="card-header border-secondary bg-transparent py-3 d-flex justify-content-between align-items-center">
+                        <h1 class="h3 mb-0 text-hologram">📋 Contrat de Location #{{ location.id }}</h1>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <span class="badge bg-danger">Archive Admin</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="card-body p-4">
+                        <div class="row g-4">
+                            {# Film Info #}
+                            <div class="col-md-4 text-center">
+                                {% if location.idFilm.image %}
+                                    <img src="{{ location.idFilm.image }}" class="img-fluid rounded shadow border border-secondary" alt="Poster">
+                                {% else %}
+                                    <div class="bg-secondary rounded d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="bi bi-film display-4"></i>
+                                    </div>
+                                {% endif %}
+                                <h5 class="mt-3 text-info">{{ location.idFilm.titre }}</h5>
+                            </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ location.id }}</td>
-            </tr>
-            <tr>
-                <th>Date_debut</th>
-                <td>{{ location.dateDebut ? location.dateDebut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Date_fin</th>
-                <td>{{ location.dateFin ? location.dateFin|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+                            {# Contract Details #}
+                            <div class="col-md-8">
+                                <h4 class="text-secondary text-uppercase small mb-3 border-bottom border-dark pb-2">Détails de la mission</h4>
+                                
+                                <div class="mb-3">
+                                    <label class="text-muted small">Pilote (Utilisateur)</label>
+                                    <div class="d-flex align-items-center">
+                                        <i class="bi bi-person-circle me-2"></i>
+                                        <span class="fs-5">{{ location.idUser.nomUtilisateur }}</span>
+                                    </div>
+                                </div>
 
-    <a href="{{ path('app_location_index') }}">back to list</a>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <label class="text-muted small">Date de début</label>
+                                        <p class="fs-5 fw-bold text-success">
+                                            <i class="bi bi-calendar-check me-2"></i>{{ location.dateDebut ? location.dateDebut|date('d/m/Y') : '-' }}
+                                        </p>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="text-muted small">Date de fin</label>
+                                        <p class="fs-5 fw-bold text-warning">
+                                            <i class="bi bi-calendar-x me-2"></i>{{ location.dateFin ? location.dateFin|date('d/m/Y') : '-' }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-    <a href="{{ path('app_location_edit', {'id': location.id}) }}">edit</a>
-
-    {{ include('location/_delete_form.html.twig') }}
+                    <div class="card-footer border-secondary bg-transparent d-flex justify-content-between align-items-center">
+                        <a href="{{ path('app_location_index') }}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-arrow-left"></i> Retour au journal
+                        </a>
+                        
+                        {% if is_granted('ROLE_ADMIN') or app.user == location.idUser %}
+                             <div class="d-flex gap-2">
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    <a href="{{ path('app_location_edit', {'id': location.id}) }}" class="btn btn-outline-info btn-sm">
+                                        <i class="bi bi-pencil"></i> Modifier
+                                    </a>
+                                {% endif %}
+                                {{ include('location/_delete_form.html.twig') }}
+                             </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}

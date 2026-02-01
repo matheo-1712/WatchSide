@@ -19,7 +19,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class FilmController extends AbstractController
 {
     #[Route('', name: 'app_film_index', methods: ['GET'])]
-    public function index(FilmRepository $filmRepository): Response
+    public function index(FilmRepository $filmRepository, \App\Repository\GenreRepository $genreRepository): Response
     {
         $user = $this->getUser();
 
@@ -29,6 +29,7 @@ final class FilmController extends AbstractController
         }
 
         $tousLesFilms = $filmRepository->findAll();
+        $genres = $genreRepository->findAll();
 
         $favorisFilms = array_map(fn($favoris) => $favoris->getIdFilm(), $favoris);
 
@@ -39,6 +40,7 @@ final class FilmController extends AbstractController
         return $this->render('film/index.html.twig', [
             'favoris' => $favoris,
             'films' => $films,
+            'genres' => $genres,
         ]);
     }
 
@@ -171,21 +173,14 @@ final class FilmController extends AbstractController
     }
 
     #[Route('/films/recherche', name: 'film_recherche')]
-    public function rechercherFilm(Request $request, EntityManagerInterface $em)
+    public function rechercherFilm(Request $request, FilmRepository $filmRepository, \App\Repository\GenreRepository $genreRepository)
     {
         $motCle = $request->query->get('q');
+        $genreId = $request->query->get('genre');
+        $genreId = is_numeric($genreId) ? (int) $genreId : null;
 
-        if ($motCle) {
-            $films = $em->createQuery(
-                'SELECT f
-             FROM App\Entity\Film f
-             WHERE f.titre LIKE :mot'
-            )
-                ->setParameter('mot', '%' . $motCle . '%')
-                ->getResult();
-        } else {
-            $films = $em->getRepository(Film::class)->findAll();
-        }
+        $films = $filmRepository->search($motCle, $genreId);
+        $genres = $genreRepository->findAll();
 
         $user = $this->getUser();
         $favoris = [];
@@ -195,7 +190,10 @@ final class FilmController extends AbstractController
 
         return $this->render('film/index.html.twig', [
             'films' => $films,
-            'favoris' => $favoris
+            'favoris' => $favoris,
+            'genres' => $genres,
+            'selectedGenre' => $genreId,
+            'searchQuery' => $motCle
         ]);
     }
 

@@ -3,9 +3,23 @@
 {% block title %}New Film{% endblock %}
 
 {% block body %}
-    <h1>Create new Film</h1>
-
-    {{ include('film/_form.html.twig') }}
-
-    <a href="{{ path('app_film_index') }}">back to list</a>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card bg-dark text-light border-secondary shadow-lg">
+                    <div class="card-header border-secondary bg-transparent py-3">
+                        <h1 class="h3 mb-0">🎬 Ajouter un film</h1>
+                    </div>
+                    <div class="card-body">
+                        {{ include('film/_form.html.twig') }}
+                    </div>
+                    <div class="card-footer border-secondary bg-transparent">
+                        <a href="{{ path('app_film_index') }}" class="btn btn-outline-light btn-sm">
+                            <i class="bi bi-arrow-left"></i> Retour à la liste
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
