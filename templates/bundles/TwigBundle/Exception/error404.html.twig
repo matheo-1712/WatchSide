@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Page Introuvable - WatchSide Galactic{% endblock %}
+
+{% block body %}
+<div class="container d-flex flex-column justify-content-center align-items-center" style="min-height: 80vh;">
+    <div class="glass-panel p-5 text-center animate-fade-in" style="max-width: 600px;">
+        <div class="display-1 text-warning fw-bold mb-3">
+            <i class="bi bi-broadcast"></i>
+        </div>
+        <h1 class="display-4 text-hologram fw-bold mb-4">SIGNAL PERDU</h1>
+        
+        <p class="lead text-light mb-4">
+            <strong class="text-warning">Erreur 404</strong> : Les coordonnées spécifiées ne correspondent à aucun système connu dans nos archives.
+        </p>
+        
+        <p class="text-secondary mb-5">
+            Il semble que vous ayez dérivé trop loin dans l'hyperespace. Cette page a peut-être été détruite par l'Empire ou n'a jamais existé.
+        </p>
+
+        <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+            <a href="{{ path('app_home') }}" class="btn btn-galactic btn-lg px-4 gap-3">
+                <i class="bi bi-rocket-takeoff me-2"></i> Retour à la base (Accueil)
+            </a>
+            <a href="{{ path('app_film_index') }}" class="btn btn-outline-light btn-lg px-4">
+                <i class="bi bi-film me-2"></i> Consulter le catalogue
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

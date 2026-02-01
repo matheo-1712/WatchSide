@@ -16,28 +16,23 @@ class FilmRepository extends ServiceEntityRepository
         parent::__construct($registry, Film::class);
     }
 
-    //    /**
-    //     * @return Film[] Returns an array of Film objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('f.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
+    /**
+     * @return Film[]
+     */
+    public function search(?string $query = null, ?int $genreId = null): array
+    {
+        $qb = $this->createQueryBuilder('f');
 
-    //    public function findOneBySomeField($value): ?Film
-    //    {
-    //        return $this->createQueryBuilder('f')
-    //            ->andWhere('f.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
+        if ($query) {
+            $qb->andWhere('f.titre LIKE :query')
+                ->setParameter('query', '%' . $query . '%');
+        }
+
+        if ($genreId) {
+            $qb->andWhere('f.id_genre = :genreId')
+                ->setParameter('genreId', $genreId);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

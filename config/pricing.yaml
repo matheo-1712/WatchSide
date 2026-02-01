@@ -1,0 +1,18 @@
+# Configuration des règles de tarification dynamique
+# Ce fichier définit les règles pour les majorations de prix en fonction des jours
+
+parameters:
+    app.pricing.surge_rules:
+        # 1 = Lundi, 7 = Dimanche
+        # Réduction de 10% le Jeudi
+        - { day: 4, multiplier: 0.9, label: 'Jeudi -10%' }
+
+    app.pricing.special_dates:
+        # Réduction de 20% pour le 4 mai (May the 4th)
+        - { month: 5, day: 4, multiplier: 0.8, label: 'Star Wars Day -20%' }
+        # Réduction pour le nouvel an
+        - { month: 12, day: 31, multiplier: 0.8, label: 'Promo Nouvel An -20%' }
+
+    app.pricing.special_ranges:
+        # Semaine de lancement (du 1er au 7 Février 2026) : -20%
+        - { start: '2026-02-01', end: '2026-02-07', multiplier: 0.8, label: 'Lancement -20% 🚀' }

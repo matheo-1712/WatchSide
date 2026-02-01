@@ -7,7 +7,7 @@
     <div class="row justify-content-center">
         <div class="col-md-10 col-lg-8">
             <div class="glass-panel p-5 position-relative overflow-hidden">
-                
+
                 {# Animated Background Element #}
                 <div class="position-absolute top-0 end-0 p-5 opacity-10">
                     <i class="bi bi-cart-plus display-1 text-hologram"></i>
@@ -26,7 +26,22 @@
                         </div>
                         <div class="col-md-8">
                             <h2 class="text-hologram fw-bold mb-2">Louer : {{ selectedFilm.titre }}</h2>
-                             <p class="text-secondary mb-0">Confirmez les détails de votre location intergalactique.</p>
+                             <p class="text-secondary mb-3">Confirmez les détails de votre location intergalactique.</p>
+                             
+                             {% if calculatedPrice is defined and calculatedPrice %}
+                                <div class="p-3 border border-info rounded bg-black bg-opacity-25 mb-3">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="text-light">Prix de location :</span>
+                                        <span class="display-6 fw-bold text-sith">{{ calculatedPrice }} €</span>
+                                    </div>
+                                    {% if surgeLabel %}
+                                        <div class="mt-2 text-warning small">
+                                            <i class="bi bi-exclamation-triangle-fill me-1"></i>
+                                            Tarif ajusté : <strong>{{ surgeLabel }}</strong>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                             {% endif %}
                         </div>
                      {% else %}
                         <div class="col-12 text-center">
@@ -35,15 +50,17 @@
                         </div>
                      {% endif %}
                 </div>
-                
+
                 <div class="galactic-form">
                     {{ include('location/_form.html.twig') }}
                 </div>
-                
+
                 <div class="mt-5 d-flex justify-content-between align-items-center border-top border-secondary pt-4">
-                    <a href="{{ path('app_location_index') }}" class="btn btn-outline-secondary btn-sm link-light text-decoration-none">
+
+                    <a href="{{ path('app_film_index') }}" class="btn btn-outline-secondary btn-sm link-light text-decoration-none">
                         <i class="bi bi-arrow-left"></i> Retour
                     </a>
+
                 </div>
             </div>
         </div>

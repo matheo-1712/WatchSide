@@ -7,7 +7,7 @@
     {# Header Section #}
     <div class="row mb-4">
         <div class="col-12">
-            <div class="cockpit-panel p-4 rounded-3 d-flex align-items-center">
+            <div class="cockpit-panel p-4 rounded-3 d-flex align-items-center justify-content-between">
                 <div>
                     <h1 class="display-5 text-hologram fw-bold mb-0">{{ user.nomUtilisateur }}</h1>
                     <p class="text-secondary mb-0">Matricule: #{{ user.id|format_number({min_integer_digit: 4, grouping_used:false}) }}</p>
@@ -15,6 +15,11 @@
                         <i class="bi bi-star-fill me-1"></i> Pilote Confirmé
                     </span>
                 </div>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a href="{{ path('app_location_index') }}" class="btn btn-outline-danger btn-lg click-effect">
+                        <i class="bi bi-shield-lock-fill me-2"></i> Gérer les locations
+                    </a>
+                {% endif %}
             </div>
         </div>
     </div>
