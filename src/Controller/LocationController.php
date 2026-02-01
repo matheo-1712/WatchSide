@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class LocationController extends AbstractController
 {
     #[Route(name: 'app_location_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function index(LocationRepository $locationRepository): Response
     {
         return $this->render('location/index.html.twig', [
@@ -24,6 +25,7 @@ final class LocationController extends AbstractController
     }
 
     #[Route('/new/{id}', name: 'app_location_new', defaults: ['id' => null], methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_USER")]
     public function new(Request $request, EntityManagerInterface $entityManager, ?int $id = null): Response
     {
         $location = new Location();
@@ -66,6 +68,7 @@ final class LocationController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_location_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function show(Location $location): Response
     {
         return $this->render('location/show.html.twig', [
