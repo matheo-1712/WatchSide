@@ -23,6 +23,8 @@ composer install
 ### 3. Initialisation de la Base de Données
 Pour partir sur une base propre avec les données de test (Utilisateurs, Films, Locations) :
 
+Stocké dans le fichier `src/DataFixtures/AppFixtures.php`
+
 ```bash
 # Réinitialisation complète (Drop + Create + Schema + Fixtures)
 APP_ENV=dev php bin/console doctrine:database:drop --force
@@ -46,11 +48,11 @@ Le site sera accessible sur `https://127.0.0.1:8000`.
 Voici les comptes générés pour tester l'application :
 
 | Rôle | Identifiant | Mot de Passe | Description |
-| :--- | :--- | :--- | :--- |
-| **ADMIN** | `admin` | `password` | Accès complet (Formulaires, Gestion Locations, Suppression) |
-| **USER** | `yoda` | `password` | Utilisateur standard (Peut louer, noter, voir son profil) |
-| **USER** | `vader` | `password` | Utilisateur standard |
-| **USER** | `han` | `password` | Utilisateur standard |
+| :--- | :--- |:-------------| :--- |
+| **ADMIN** | `admin` | `admin`      | Accès complet (Formulaires, Gestion Locations, Suppression) |
+| **USER** | `yoda` | `yoda`       | Utilisateur standard (Peut louer, noter, voir son profil) |
+| **USER** | `vader` | `vader`      | Utilisateur standard |
+| **USER** | `han` | `han`        | Utilisateur standard |
 
 ---
 
@@ -63,16 +65,4 @@ Le prix des locations est dynamique :
     *   **Jeudi** : -10%
     *   **Dates Spéciales** (4 Mai, Nouvel An) : -20%
 
----
-
-## (Optionnel) Commandes Utiles
-
-*   **Créer un nouveau User** :
-    ```bash
-    php bin/console app:create-user <username> <password>
-    ```
-
-*   **Vider le cache** :
-    ```bash
-    php bin/console cache:clear
-    ```
+Ils sont configurables dans le fichier `config/pricing.yaml`.
