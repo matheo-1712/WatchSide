@@ -1,9 +1,9 @@
-# 🎬 WatchSide Galactic
+# 🎬 WatchSide
 
 Bienvenue sur **WatchSide**, la plateforme de location de films intergalactique !
 Ce projet Symfony gère la location de films avec une tarification dynamique, des rôles utilisateurs (Admin/Pilote) et un design "Glassmorphism" sombre.
 
-## 🚀 Installation & Démarrage
+## Installation & Démarrage
 
 Suivez ces étapes pour lancer le projet localement.
 
@@ -43,7 +43,7 @@ Le site sera accessible sur `https://127.0.0.1:8000`.
 
 ---
 
-## 🔑 Identifiants de Test (Fixtures)
+## Identifiants de Test (Fixtures)
 
 Voici les comptes générés pour tester l'application :
 
@@ -56,7 +56,7 @@ Voici les comptes générés pour tester l'application :
 
 ---
 
-## 💰 Règles de Tarification (Pricing)
+## Règles de Tarification (Pricing)
 
 Le prix des locations est dynamique :
 1.  **Prix de base** : Calculé selon l'année de sortie (Ancien = 7€, Récent = 15€).
