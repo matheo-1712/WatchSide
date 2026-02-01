@@ -16,6 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class NoteController extends AbstractController
 {
     #[Route(name: 'app_note_index', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function index(NoteRepository $noteRepository): Response
     {
         return $this->render('note/index.html.twig', [
@@ -24,6 +25,7 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/new', name: 'app_note_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $note = new Note();
@@ -44,6 +46,7 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_note_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function show(Note $note): Response
     {
         return $this->render('note/show.html.twig', [
@@ -52,6 +55,7 @@ final class NoteController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_note_edit', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function edit(Request $request, Note $note, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(NoteType::class, $note);

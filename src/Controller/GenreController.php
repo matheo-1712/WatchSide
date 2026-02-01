@@ -46,6 +46,7 @@ final class GenreController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_genre_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function show(Genre $genre): Response
     {
         return $this->render('genre/show.html.twig', [

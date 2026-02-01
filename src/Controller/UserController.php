@@ -25,6 +25,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -45,6 +46,7 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function show(User $user): Response
     {
         return $this->render('user/show.html.twig', [

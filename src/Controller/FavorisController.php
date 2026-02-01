@@ -25,6 +25,7 @@ final class FavorisController extends AbstractController
     }
 
     #[Route('/new', name: 'app_favoris_new', methods: ['GET', 'POST'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $favori = new Favoris();
@@ -45,6 +46,7 @@ final class FavorisController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_favoris_show', methods: ['GET'])]
+    #[IsGranted("ROLE_ADMIN")]
     public function show(Favoris $favori): Response
     {
         return $this->render('favoris/show.html.twig', [
