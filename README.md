@@ -54,6 +54,8 @@ Voici les comptes générés pour tester l'application :
 | **USER** | `vader` | `vader`      | Utilisateur standard |
 | **USER** | `han` | `han`        | Utilisateur standard |
 
+Lors de votre inscription votre mot de passe doit contenir au moins 6 caractères
+
 ---
 
 ## Règles de Tarification (Pricing)
